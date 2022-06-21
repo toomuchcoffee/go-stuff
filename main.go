@@ -1,15 +1,16 @@
 package main
 
 import (
-	"example.com/gostuff/apiservice"
+	"example.com/gostuff/api"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"os"
 )
 
 func main() {
 	router := gin.Default()
-	router.GET("/weather/:city", getCurrentWeather)
+	router.GET("/", api.GetCurrentWeather)
+	router.GET("/weather", api.GetCurrentWeather)
+	router.GET("/weather/:city", api.GetCurrentWeatherForCity)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -17,10 +18,4 @@ func main() {
 	} else {
 		router.Run(":" + port)
 	}
-}
-
-func getCurrentWeather(c *gin.Context) {
-	city := c.Param("city")
-	result := apiservice.SuggestClothes(city)
-	c.IndentedJSON(http.StatusOK, result)
 }

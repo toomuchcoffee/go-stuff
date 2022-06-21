@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"example.com/gostuff/apiservice"
+	"example.com/gostuff/api"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"net/http"
@@ -15,14 +15,14 @@ func SetUpRouter() *gin.Engine {
 	return router
 }
 
-func TestGetCurrentWeather(t *testing.T) {
+func TestGetCurrentWeatherForCity(t *testing.T) {
 	r := SetUpRouter()
-	r.GET("/weather/:city", getCurrentWeather)
+	r.GET("/weather/:city", api.GetCurrentWeatherForCity)
 	req, _ := http.NewRequest("GET", "/weather/Tromso", nil)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
-	var got apiservice.Suggestion
+	var got api.CurrentWeatherResult
 	json.Unmarshal(w.Body.Bytes(), &got)
 
 	assert.Equal(t, http.StatusOK, w.Code)
