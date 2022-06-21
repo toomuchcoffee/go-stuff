@@ -1,4 +1,4 @@
-package geo
+package downstream
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -13,4 +13,14 @@ func TestGetLonLatFromCity(t *testing.T) {
 	}
 
 	assert.Equal(t, got, want)
+}
+
+func TestGetWeatherFromLonLat(t *testing.T) {
+	lonlat := LonLat{
+		Lon: "18.95586",
+		Lat: "69.66558",
+	}
+	got := GetWeatherForLonLat(lonlat)
+
+	assert.NotNil(t, got)
 }

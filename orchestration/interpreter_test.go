@@ -1,4 +1,4 @@
-package interpreter
+package orchestration
 
 import (
 	"testing"
@@ -23,8 +23,8 @@ func TestAnalyseWeather(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := AnalyseWeather(tt.args.weatherCode, tt.args.temperature); got.Clothes != tt.want {
-				t.Errorf("AnalyseWeather() = %v, want %v", got, tt.want)
+			if got := GetInterpretation(tt.args.weatherCode, tt.args.temperature); got.Clothes != tt.want {
+				t.Errorf("GetInterpretation() = %v, want %v", got, tt.want)
 			}
 		})
 	}

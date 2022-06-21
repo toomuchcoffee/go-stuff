@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"example.com/gostuff/api"
+	"example.com/gostuff/orchestration"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"net/http"
@@ -22,7 +23,7 @@ func TestGetCurrentWeatherForCity(t *testing.T) {
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
-	var got api.CurrentWeatherResult
+	var got orchestration.CurrentWeatherResult
 	json.Unmarshal(w.Body.Bytes(), &got)
 
 	assert.Equal(t, http.StatusOK, w.Code)
