@@ -24,7 +24,6 @@ func CallDownstreamService[T any](url string, responseObject T) T {
 	if err != nil {
 		fmt.Print(err.Error())
 	}
-
 	json.Unmarshal(bodyBytes, &responseObject)
 	return responseObject
 }
