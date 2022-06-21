@@ -4,13 +4,19 @@ import (
 	"example.com/gostuff/apiservice"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os"
 )
 
 func main() {
 	router := gin.Default()
 	router.GET("/weather/:city", getCurrentWeather)
 
-	router.Run("localhost:8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		router.Run("localhost:8080")
+	} else {
+		router.Run(":" + port)
+	}
 }
 
 func getCurrentWeather(c *gin.Context) {
