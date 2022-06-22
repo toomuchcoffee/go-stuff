@@ -8,8 +8,12 @@ import (
 
 func GetCurrentWeatherForCity(c *gin.Context) {
 	city := c.Param("city")
-	result := orchestration.CreateResult(city)
-	c.IndentedJSON(http.StatusOK, result)
+	result, err := orchestration.CreateResult(city)
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, orchestration.CurrentWeatherResult{Error: err.Error()})
+	} else {
+		c.IndentedJSON(http.StatusOK, result)
+	}
 }
 
 func GetCurrentWeather(c *gin.Context) {
