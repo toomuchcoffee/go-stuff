@@ -5,10 +5,14 @@ import (
 )
 
 func CreateResult(city string) CurrentWeatherResult {
-	lonLatResponse := downstream.GetLonLatFromCity(city)
-	weatherResponse := downstream.GetWeatherForLonLat(lonLatResponse)
+	lonLatResponse, lonLatError := downstream.GetLonLatFromCity(city)
+	weatherResponse, _ := downstream.GetWeatherForLonLat(lonLatResponse)
 	interpretation := AnalyseWeather(weatherResponse.CurrentWeather.Weathercode)
 	clothes := SelectClothes(weatherResponse.CurrentWeather.Temperature, interpretation.Rain)
+
+	if lonLatError != nil {
+		return CurrentWeatherResult{}
+	}
 
 	return CurrentWeatherResult{
 		City:    city,
