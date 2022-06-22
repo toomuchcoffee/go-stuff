@@ -1,14 +1,6 @@
 package orchestration
 
-import "strings"
-
-func GetInterpretation(weatherCode int, temperature float64) Interpretation {
-	interpretation := analyseWeather(weatherCode)
-	interpretation.Clothes = selectClothes(temperature, interpretation.Rain)
-	return interpretation
-}
-
-func analyseWeather(weatherCode int) Interpretation {
+func AnalyseWeather(weatherCode int) Interpretation {
 	var interpretation Interpretation
 	switch weatherCode {
 	case 0:
@@ -54,24 +46,7 @@ func analyseWeather(weatherCode int) Interpretation {
 	return interpretation
 }
 
-func selectClothes(temperature float64, rain bool) string {
-	var clothes []string
-	if temperature >= 20 {
-		clothes = append(clothes, "light")
-	} else if temperature <= 0 {
-		clothes = append(clothes, "heavy")
-	} else {
-		clothes = append(clothes, "medium")
-	}
-	if rain {
-		clothes = append(clothes, "waterproof")
-	}
-	clothes = append(clothes, "wear")
-	return strings.Join(clothes, " ")
-}
-
 type Interpretation struct {
 	Description string
 	Rain        bool
-	Clothes     string
 }

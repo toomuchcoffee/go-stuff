@@ -7,7 +7,8 @@ import (
 func CreateResult(city string) CurrentWeatherResult {
 	lonLatResponse := downstream.GetLonLatFromCity(city)
 	weatherResponse := downstream.GetWeatherForLonLat(lonLatResponse)
-	interpretation := GetInterpretation(weatherResponse.CurrentWeather.Weathercode, weatherResponse.CurrentWeather.Temperature)
+	interpretation := AnalyseWeather(weatherResponse.CurrentWeather.Weathercode)
+	clothes := SelectClothes(weatherResponse.CurrentWeather.Temperature, interpretation.Rain)
 
 	return CurrentWeatherResult{
 		City:    city,
@@ -15,7 +16,7 @@ func CreateResult(city string) CurrentWeatherResult {
 		Lat:     lonLatResponse.Lat,
 		Temp:    weatherResponse.CurrentWeather.Temperature,
 		Weather: interpretation.Description,
-		Clothes: interpretation.Clothes,
+		Clothes: clothes,
 	}
 }
 
