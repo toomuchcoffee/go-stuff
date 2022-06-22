@@ -1,22 +1,20 @@
 package api
 
 import (
+	"net/http"
+
 	"example.com/gostuff/orchestration"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
-func GetCurrentWeatherForCity(c *gin.Context) {
-	city := c.Param("city")
+func GetCurrentWeather(c *gin.Context) {
+	city := c.DefaultQuery("city", orchestration.ChooseRandomCity())
 	result, err := orchestration.CreateResult(city)
 	if err != nil {
 		c.IndentedJSON(http.StatusNotFound, orchestration.CurrentWeatherResult{Error: err.Error()})
+	} else if c.Query("city") == "" {
+		c.Redirect(http.StatusFound, "/weather?city="+city)
 	} else {
 		c.IndentedJSON(http.StatusOK, result)
 	}
-}
-
-func GetCurrentWeather(c *gin.Context) {
-	city := orchestration.ChooseRandomCity()
-	c.Redirect(http.StatusFound, "/weather/"+city)
 }

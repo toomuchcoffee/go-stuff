@@ -2,13 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+
 	"example.com/gostuff/api"
 	"example.com/gostuff/orchestration"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
-	"net/http"
-	"net/http/httptest"
-	"testing"
 )
 
 func SetUpRouter() *gin.Engine {
@@ -18,8 +19,8 @@ func SetUpRouter() *gin.Engine {
 
 func TestGetCurrentWeatherForCity(t *testing.T) {
 	r := SetUpRouter()
-	r.GET("/weather/:city", api.GetCurrentWeatherForCity)
-	req, _ := http.NewRequest("GET", "/weather/Tromso", nil)
+	r.GET("/weather", api.GetCurrentWeather)
+	req, _ := http.NewRequest("GET", "/weather?city=Tromso", nil)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
