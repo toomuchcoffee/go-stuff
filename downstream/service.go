@@ -20,6 +20,18 @@ type LonLat struct {
 	Lat string `json:"latt"`
 }
 
+func GetLocationFromLonLat(lonLat LonLat) Location {
+	url := fmt.Sprintf("https://geocode.xyz/%s,%s?json=1", lonLat.Lat, lonLat.Lon)
+	var responseObject Location
+	location, _ := CallDownstreamService(url, responseObject)
+	return location
+}
+
+type Location struct {
+	City    string `json:"city"`
+	Country string `json:"country"`
+}
+
 func GetWeatherForLonLat(lonlat LonLat) (Weather, error) {
 	url := fmt.Sprintf("https://api.open-meteo.com/v1/forecast?latitude=%s&longitude=%s&current_weather=true", lonlat.Lat, lonlat.Lon)
 	var responseObject Weather

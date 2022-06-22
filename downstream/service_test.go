@@ -13,7 +13,7 @@ func TestGetLonLatFromCity(t *testing.T) {
 		Lat: "69.66558",
 	}
 
-	assert.Equal(t, got, want)
+	assert.Equal(t, want, got)
 }
 
 func TestGetLonLatFromCityNotFound(t *testing.T) {
@@ -21,6 +21,17 @@ func TestGetLonLatFromCityNotFound(t *testing.T) {
 	wantError := errors.New("No LonLat found for city: Foobar")
 
 	assert.Equal(t, wantError, gotError)
+}
+
+func TestGetLocationFromLonLat(t *testing.T) {
+	lonLat := LonLat{
+		Lon: "18.95586",
+		Lat: "69.66558",
+	}
+	got := GetLocationFromLonLat(lonLat)
+	want := Location{City: "TROMSØ", Country: "Norway"}
+
+	assert.Equal(t, want, got)
 }
 
 func TestGetWeatherFromLonLat(t *testing.T) {

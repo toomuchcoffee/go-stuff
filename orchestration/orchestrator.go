@@ -5,18 +5,20 @@ import (
 )
 
 func CreateResult(city string) (CurrentWeatherResult, error) {
-	lonLatResponse, lonLatError := downstream.GetLonLatFromCity(city)
+	lonLat, lonLatError := downstream.GetLonLatFromCity(city)
 	if lonLatError != nil {
 		return CurrentWeatherResult{}, lonLatError
 	}
-	weatherResponse, _ := downstream.GetWeatherForLonLat(lonLatResponse)
+	location := downstream.GetLocationFromLonLat(lonLat)
+	weatherResponse, _ := downstream.GetWeatherForLonLat(lonLat)
 	interpretation := AnalyseWeather(weatherResponse.CurrentWeather.Weathercode)
 	clothes := SelectClothes(weatherResponse.CurrentWeather.Temperature, interpretation.Rain)
 
 	return CurrentWeatherResult{
-		City:    city,
-		Lon:     lonLatResponse.Lon,
-		Lat:     lonLatResponse.Lat,
+		City:    location.City,
+		Country: location.Country,
+		Lon:     lonLat.Lon,
+		Lat:     lonLat.Lat,
 		Temp:    weatherResponse.CurrentWeather.Temperature,
 		Weather: interpretation.Description,
 		Clothes: clothes,
@@ -25,6 +27,7 @@ func CreateResult(city string) (CurrentWeatherResult, error) {
 
 type CurrentWeatherResult struct {
 	City    string  `json:"city,omitempty"`
+	Country string  `json:"country,omitempty"`
 	Lon     string  `json:"lon,omitempty"`
 	Lat     string  `json:"lat,omitempty"`
 	Temp    float64 `json:"temp,omitempty"`

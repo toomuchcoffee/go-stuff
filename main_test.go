@@ -33,6 +33,7 @@ func TestGetCurrentWeatherForCity(t *testing.T) {
 	assert.NotNil(t, got.Lon)
 	assert.Equal(t, "18.95586", got.Lon)
 	assert.Equal(t, "69.66558", got.Lat)
-	assert.Equal(t, "Tromso", got.City)
+	assert.Equal(t, "Norway", got.Country)
+	assert.Equal(t, "TROMSØ", got.City)
 	assert.NotNil(t, got.Clothes)
 }
